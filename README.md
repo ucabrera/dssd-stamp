@@ -21,7 +21,7 @@ username: test password: test
 ![Uso de /login](./capturas/captura1.png?raw=true)
 
 
-**POST /api/stamp** - Genera el hash para un expediente. Necesita el token en un header Authorization y 2 paramétros, el numero de expediente y el estatuto.
+**POST /api/stamp** - Genera el hash para un expediente. Necesita el token en un header Authorization y 2 paramétros, statute y proceedings.
 
 - Ejemplo de uso:
 
