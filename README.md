@@ -26,6 +26,7 @@ username: test password: test
 - Ejemplo de uso:
 
 ![Uso de /api/stamp parametros](./capturas/captura2.png?raw=true)
+![Uso de /api/stamp hash](./capturas/captura5.png?raw=true)
 ![Uso de /api/stamp header](./capturas/captura3.png?raw=true)
 ![Uso de /api/stamp qr](./capturas/captura4.png?raw=true)
-![Uso de /api/stamp hash](./capturas/captura5.png?raw=true)
+
