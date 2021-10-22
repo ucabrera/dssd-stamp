@@ -31,6 +31,9 @@ class JwtAuth
 
 class Api < Sinatra::Base
 
+  require 'uri'
+  require 'net/http'
+
   use JwtAuth
   
   def initialize
@@ -38,12 +41,19 @@ class Api < Sinatra::Base
 
   end
 
-  post '/stamp' do
+  def generate_qr(aHash)
+    url = URI("http://api.qrserver.com/v1/create-qr-code/?data=https://dssd-stamp.herokuapp.com/" + aHash.to_s + "&size=200x200")
+    http = Net::HTTP.new(url.host, url.port)
+    request = Net::HTTP::Post.new(url)
+    response = http.request(request)
+    response.read_body
+  end
 
-    proceedings = request.params["proceedings"] 
+  post '/stamp' do
+    dossier = request.params["dossier"] 
     statute = request.params["statute"]
     errors = []
-    if proceedings.nil?
+    if dossier.nil?
       error = true
       errors.push('No se especificó un numero de expediente.')
     end
@@ -53,9 +63,11 @@ class Api < Sinatra::Base
     end
     if error
       [401, { 'Content-Type' => 'text/plain' }, errors]
-    else
-      content_type :json
-      { hash: Time.now.to_i }.to_json
+    else 
+      aHash = Time.now.to_i
+      response = generate_qr(aHash)
+      [200, { 'Content-Type' => 'image/png', 'hash' => aHash.to_s }, response ]
+
     end
   end
 
@@ -92,7 +104,7 @@ class Public < Sinatra::Base
         content_type :json
         { token: token(username) }.to_json
       else
-        halt 401
+        [401, { 'Content-Type' => 'text/plain' }, 'Usuario o contraseña no válidos.']
       end
     end
   end
